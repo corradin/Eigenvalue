@@ -1,0 +1,18 @@
+{
+  "name": "eigenvalue",
+  "version": "1.0.0",
+  "description": "Calculates the eigenvalue and eigenvector given a matrix",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "author": "R.Corradin",
+  "license": "ISC",
+  "devDependencies": {
+    "companion-roots": "0.0.1",
+    "jest": "^23.1.0"
+  },
+  "dependencies": {
+    "durand-kerner": "^1.0.0"
+  }
+}
