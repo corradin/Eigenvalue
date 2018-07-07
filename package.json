@@ -13,6 +13,7 @@
     "jest": "^23.1.0"
   },
   "dependencies": {
-    "durand-kerner": "^1.0.0"
+    "durand-kerner": "^1.0.0",
+    "emlapack": "0.0.3"
   }
 }
