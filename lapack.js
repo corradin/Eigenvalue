@@ -1,3 +1,4 @@
+
 var emlapack = require('emlapack');
 
 exports.eigenValue = (matrix) => {
@@ -5,7 +6,7 @@ exports.eigenValue = (matrix) => {
     if (matrix.length === 1) {
         return {
             real: matrix[0]
-        }
+        };
     }
     var n = matrix.length,
         dgeev = emlapack.cwrap('dgeev_', null, ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']),
@@ -40,7 +41,7 @@ exports.eigenValue = (matrix) => {
     matrix.forEach(row => {
         row.forEach(element => {
             flattenedMatrix.push(element);
-        })
+        });
     });
     a.set(flattenedMatrix);
 
@@ -57,7 +58,7 @@ exports.eigenValue = (matrix) => {
     return {
         real: w,
         imaginary: i
-    }
+    };
 };
 
 /*
