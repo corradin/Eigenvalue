@@ -6,10 +6,10 @@ This is done using the Lapack dgeev method.
 
 To use the package:
 
-var lapack = require('eigenvalue');
+var matrixEig = require('matrix-eig');
 
 var matrix = [[0, 1][-2, -3]]
-var result = lapack.eig(matrix);
+var result = matrixEig.eig(matrix);
 console.log(result.eigenvalues.real);
 
 console.log(result.eigenvalues.imaginary);
