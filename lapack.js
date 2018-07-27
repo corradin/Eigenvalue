@@ -1,12 +1,26 @@
 
 var emlapack = require('emlapack');
 
-exports.eigenValue = (matrix) => {
+exports.eig = (matrix) => {
     //See: http://www.netlib.org/lapack/explore-html/d3/dfb/group__real_g_eeigen_ga104525b749278774f7b7f57195aa6798.html#ga104525b749278774f7b7f57195aa6798
+    var inputFormatErrorMessage = 'Input needs to be in a matrix form, for example: [ [ 3 ] ] or [ [3, 1], [1, 3] ]';
+    if (!Array.isArray(matrix)) {
+        throw new Error(inputFormatErrorMessage);
+    }
+    else {
+        matrix.forEach(row => {
+            if (!Array.isArray(row)) {
+                throw new Error(inputFormatErrorMessage);
+            }
+        });
+    }
+
+    //TODO: Remove this
     if (matrix.length === 1) {
-        return {
-            real: matrix[0]
-        };
+        // return {
+        //     real: matrix[0]
+        // };
+        matrix = [matrix];
     }
     var n = matrix.length,
         dgeev = emlapack.cwrap('dgeev_', null, ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']),
@@ -25,8 +39,9 @@ exports.eigenValue = (matrix) => {
         plwork = emlapack._malloc(4),
         pinfo = emlapack._malloc(4);
 
+    //Calculate both left and right eigenvectors
     emlapack.setValue(pjobvl, 'V'.charCodeAt(0), 'i8');
-    emlapack.setValue(pjobvr, 'N'.charCodeAt(0), 'i8');
+    emlapack.setValue(pjobvr, 'V'.charCodeAt(0), 'i8');
     emlapack.setValue(pn, n, 'i32');
     emlapack.setValue(plda, n, 'i32');
     emlapack.setValue(pldvl, n, 'i32');
@@ -36,6 +51,8 @@ exports.eigenValue = (matrix) => {
     var a = new Float64Array(emlapack.HEAPF64.buffer, pa, n * n);
     var w = new Float64Array(emlapack.HEAPF64.buffer, pwr, n);
     var i = new Float64Array(emlapack.HEAPF64.buffer, pwi, n);
+    var rightEigenvectors = new Float64Array(emlapack.HEAPF64.buffer, pvr, n * n);
+    var leftEigenvectors = new Float64Array(emlapack.HEAPF64.buffer, pvl, n * n);
     // a.set([0.35, 0.45, -0.14, -0.17, 0.09, 0.07, -0.54, 0.35, -0.44, -0.33, -0.03, 0.17, 0.25, -0.32, -0.13, 0.11]);
     var flattenedMatrix = [];
     matrix.forEach(row => {
@@ -45,19 +62,23 @@ exports.eigenValue = (matrix) => {
     });
     a.set(flattenedMatrix);
 
-    dgeev(pjobvl, pjobvr, pn, pa, plda, pwr, pwi, pvl, pldvl, pvr, pldvr, pworkopt, plwork, pinfo);
-    // sgeev
+    //Somehow pvl and pvr are switched in the Lapack implementation (bug?) 
+    dgeev(pjobvl, pjobvr, pn, pa, plda, pwr, pwi, pvr, pldvl, pvl, pldvr, pworkopt, plwork, pinfo);
 
     var workopt = emlapack.getValue(pworkopt, 'double'),
         pwork = emlapack._malloc(workopt * 8);
     emlapack.setValue(plwork, workopt, 'i32');
 
-    dgeev(pjobvl, pjobvr, pn, pa, plda, pwr, pwi, pvl, pldvl, pvr, pldvr, pwork, plwork, pinfo);
-    console.log(w);
-    console.log(i);
+    dgeev(pjobvl, pjobvr, pn, pa, plda, pwr, pwi, pvr, pldvl, pvl, pldvr, pwork, plwork, pinfo);
     return {
-        real: w,
-        imaginary: i
+        eigenvalues: {
+            real: w,
+            imaginary: i
+        },
+        eigenvectors: {
+            right: rightEigenvectors,
+            left: leftEigenvectors
+        }
     };
 };
 
