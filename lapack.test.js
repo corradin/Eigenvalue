@@ -114,7 +114,7 @@ describe('Eigenvectors', () => {
         expect(leftEigenvectors).toEqual(expectedleftEigenvectors);
     });
 
-    test.only('should return the real (normalized and largest number is real) eigenvectors of a more complex matrix', () => {
+    test('should return the real (normalized and largest number is real) eigenvectors of a more complex matrix', () => {
         //Arrange
         var matrix = complexMatrix;
         var expectedRightEigenvectors = new Float64Array(16);

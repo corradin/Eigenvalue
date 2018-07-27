@@ -15,13 +15,6 @@ exports.eig = (matrix) => {
         });
     }
 
-    //TODO: Remove this
-    if (matrix.length === 1) {
-        // return {
-        //     real: matrix[0]
-        // };
-        matrix = [matrix];
-    }
     var n = matrix.length,
         dgeev = emlapack.cwrap('dgeev_', null, ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']),
         pjobvl = emlapack._malloc(1),
