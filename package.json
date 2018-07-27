@@ -1,12 +1,12 @@
 {
   "name": "eigenvalue",
   "version": "1.0.0",
-  "description": "Calculates the eigenvalue and eigenvector given a matrix",
+  "description": "Calculates the eigenvalues and normalized eigenvectors for a matrix",
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll"
   },
-  "author": "R.Corradin",
+  "author": "Riccardo Corradin <riccardo.corradin@live.com>",
   "license": "ISC",
   "devDependencies": {
     "companion-roots": "0.0.1",
