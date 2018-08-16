@@ -29,6 +29,28 @@ describe('Eigenvalues', () => {
             eigFunction(input);
         }).toThrow(new Error("Input needs to be in a matrix form, for example: [ [ 3 ] ] or [ [3, 1], [1, 3] ]"));
     });
+//     test('should throw error if the matrix is too large', function () {
+//         //Arrange 
+//         var largeMatrix = [];
+//         for (let rowIndex = 0; rowIndex < 800; rowIndex++) {
+//             let row = [];
+//             for (let colIndex = 0; colIndex < 800; colIndex++) {
+//                 //Push a random number from 0 to 10
+//                 row.push(Math.floor(Math.random() * Math.floor(10)));
+//             }
+//             largeMatrix.push(row);
+//         }
+// console.log(largeMatrix);
+//         //Act 
+//         var eigFunction = lapack.eig;
+//         //Assert
+//         var eigenvalues = lapack.eig(largeMatrix).eigenvalues;
+//         console.log(eigenvalues);
+        // expect(function () {
+        //     eigFunction(largeMatrix);
+        // }).toThrow(new Error("Input needs to be in a matrix form, for example: [ [ 3 ] ] or [ [3, 1], [1, 3] ]"));
+    // });
+
     test('should return the eigenvalues of a 1 order square matrix', () => {
         //Arrange
         var matrix = [[3]];
@@ -51,6 +73,19 @@ describe('Eigenvalues', () => {
         expectedImaginary.set([0, 0]);
         //Act
         var eigenvalues = lapack.eig(matrix).eigenvalues;
+        
+        var result = lapack.eig(matrix);
+
+        console.log(result.eigenvalues.real);
+
+
+console.log(result.eigenvalues.imaginary);
+
+console.log(result.eigenvectors.left);
+
+console.log(result.eigenvectors.right);
+
+
         //Assert
         expect(eigenvalues.real).toEqual(expectedReal);
         expect(eigenvalues.imaginary).toEqual(expectedImaginary);
@@ -78,6 +113,7 @@ describe('Eigenvalues', () => {
         expect(eigenvalues.real).toEqual(expectedReal);
         expect(eigenvalues.imaginary).toEqual(expectedImaginary);
     });
+
 });
 
 describe('Eigenvectors', () => {
@@ -93,7 +129,6 @@ describe('Eigenvectors', () => {
         expect(rightEigenvectors).toEqual(expected);
         expect(leftEigenvectors).toEqual(expected);
     });
-
     test('should return the eigenvectors of a 1 order square matrix', () => {
         //Arrange
         var matrix = [[0, 1], [-2, -3]];
@@ -112,7 +147,6 @@ describe('Eigenvectors', () => {
         expect(rightEigenvectors).toEqual(expectedRightEigenvectors);
         expect(leftEigenvectors).toEqual(expectedleftEigenvectors);
     });
-
     test('should return the real (normalized and largest number is real) eigenvectors of a more complex matrix', () => {
         //Arrange
         var matrix = complexMatrix;
