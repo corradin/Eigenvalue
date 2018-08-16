@@ -9,11 +9,9 @@
   "author": "Riccardo Corradin <riccardo.corradin@live.com>",
   "license": "ISC",
   "devDependencies": {
-    "companion-roots": "0.0.1",
     "jest": "^23.1.0"
   },
   "dependencies": {
-    "durand-kerner": "^1.0.0",
     "emlapack": "0.0.3"
   }
 }
